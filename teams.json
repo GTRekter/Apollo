@@ -1,0 +1,82 @@
+{
+    "teams":[
+        {
+            "displayName": "Public team1",
+            "visibility": "Public", 
+            "users": [
+                {
+                    "email":"User1@domain.com",
+                    "role":"Owner"
+                },
+                {
+                    "email":"User2@domain.com",
+                    "role":"Member"
+                },
+                {
+                    "email":"User3@domain.com",
+                    "role":"Member"
+                }
+            ],
+            "channels": [
+                {
+                    "displayName": "Public channel",
+                    "membershipType": "Public", 
+                    "users":[]
+                },
+                {
+                    "displayName": "Private channel",
+                    "membershipType": "Private", 
+                    "users":[
+                        {
+                            "email":"User1@domain.com",
+                            "role":"Owner"
+                        },
+                        {
+                            "email":"User2@domain.com",
+                            "role":"Member"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "displayName": "Public team2",
+            "visibility": "Public", 
+            "users": [
+                {
+                    "email":"User1@domain.com",
+                    "role":"Owner"
+                },
+                {
+                    "email":"User2@domain.com",
+                    "role":"Member"
+                },
+                {
+                    "email":"User3@domain.com",
+                    "role":"Member"
+                }
+            ],
+            "channels": [
+                {
+                    "displayName": "Public channel",
+                    "membershipType": "Public", 
+                    "users":[]
+                },
+                {
+                    "displayName": "Private channel",
+                    "membershipType": "Private", 
+                    "users":[
+                        {
+                            "email":"User1@domain.com",
+                            "role":"Owner"
+                        },
+                        {
+                            "email":"User2@domain.com",
+                            "role":"Member"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,177 @@
+{
+    "definitions": {},
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://example.com/object1610484731.json",
+    "title": "root",
+    "type": "object",
+    "required": [
+        "teams"
+    ],
+    "properties": {
+        "teams": {
+            "$id": "#root/teams",
+            "title": "teams",
+            "type": "array",
+            "default": [],
+            "items": {
+                "$id": "#root/teams/items",
+                "title": "items",
+                "type": "object",
+                "required": [
+                    "displayname",
+                    "visibility",
+                    "users",
+                    "channels"
+                ],
+                "properties": {
+                    "displayname": {
+                        "$id": "#root/teams/items/displayname",
+                        "title": "displayname",
+                        "description": "Team display name",
+                        "type": "string",
+                        "default": "",
+                        "examples": [
+                            "public team1"
+                        ],
+                        "pattern": "^.*$"
+                    },
+                    "visibility": {
+                        "$id": "#root/teams/items/visibility",
+                        "title": "visibility",
+                        "description": "Team visibility",
+                        "type": "string",
+                        "default": "public",
+                        "enum": ["public", "private"],
+                        "examples": [
+                            "public",
+                            "private"
+                        ]
+                    },
+                    "users": {
+                        "$id": "#root/teams/items/users",
+                        "title": "users",
+                        "type": "array",
+                        "default": [],
+                        "items": {
+                            "$id": "#root/teams/items/users/items",
+                            "title": "items",
+                            "type": "object",
+                            "required": [
+                                "email",
+                                "role"
+                            ],
+                            "properties": {
+                                "email": {
+                                    "$id": "#root/teams/items/users/items/email",
+                                    "title": "email",
+                                    "description": "User email",
+                                    "type": "string",
+                                    "default": "",
+                                    "format": "email",
+                                    "examples": [
+                                        "user1@domain.com"
+                                    ]
+                                },
+                                "role": {
+                                    "$id": "#root/teams/items/users/items/role",
+                                    "title": "role",
+                                    "description": "User role",
+                                    "type": "string",
+                                    "default": "owner",
+                                    "enum": ["owner", "member"],
+                                    "examples": [
+                                        "owner",
+                                        "member"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "channels": {
+                        "$id": "#root/teams/items/channels",
+                        "title": "channels",
+                        "type": "array",
+                        "default": [],
+                        "items": {
+                            "$id": "#root/teams/items/channels/items",
+                            "title": "items",
+                            "description": "Team users",
+                            "type": "object",
+                            "required": [
+                                "displayname",
+                                "membershiptype",
+                                "users"
+                            ],
+                            "properties": {
+                                "displayname": {
+                                    "$id": "#root/teams/items/channels/items/displayname",
+                                    "title": "displayname",
+                                    "description": "Channels display name",
+                                    "type": "string",
+                                    "default": "",
+                                    "examples": [
+                                        "public channel"
+                                    ],
+                                    "pattern": "^.*$"
+                                },
+                                "membershiptype": {
+                                    "$id": "#root/teams/items/channels/items/membershiptype",
+                                    "title": "membershiptype",
+                                    "description": "Channels membership type",
+                                    "type": "string",
+                                    "default": "standard",
+                                    "enum": ["standard", "private"],
+                                    "examples": [
+                                        "standard",
+                                        "private"
+                                    ]
+                                },
+                                "users": {
+                                    "$id": "#root/teams/items/channels/items/users",
+                                    "title": "users",
+                                    "description": "Channels users",
+                                    "type": "array",
+                                    "default": [],
+                                    "items": {
+                                        "$id": "#root/teams/items/channels/items/users/items",
+                                        "title": "items",
+                                        "type": "object",
+                                        "required": [
+                                            "email",
+                                            "role"
+                                        ],
+                                        "properties": {
+                                            "email": {
+                                                "$id": "#root/teams/items/channels/items/users/items/email",
+                                                "title": "email",
+                                                "description": "User email",
+                                                "type": "string",
+                                                "default": "",
+                                                "format": "email",
+                                                "examples": [
+                                                    "user1@domain.com"
+                                                ]
+                                            },
+                                            "role": {
+                                                "$id": "#root/teams/items/channels/items/users/items/role",
+                                                "title": "role",
+                                                "description": "User role",
+                                                "type": "string",
+                                                "default": "member",
+                                                "enum": ["owner", "member"],
+                                                "examples": [
+                                                    "owner",
+                                                    "member"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
