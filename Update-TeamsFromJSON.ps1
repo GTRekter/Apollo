@@ -46,7 +46,7 @@ Function New-MicrosoftTeam([object]$Team) {
         } -Process {
           $IndexUsers = $IndexUsers + 1
           Write-Progress -Id 3 -ParentId 2 -Activity "Add user to the private channel" -Status "$($IndexUsers) of $($UsersLength) - User: $($_.Email), Role: $($_.Role)" -PercentComplete ($IndexUsers/$UsersLength*100)   
-          AddUserToPrivateChannel -DisplayName $DisplayName -Email $_.Email -Role $_.Role -GroupId $NewTeam.groupId
+          Add-UserToPrivateChannel -DisplayName $DisplayName -Email $_.Email -Role $_.Role -GroupId $NewTeam.groupId
         } -End {
           Write-Host "Add user to the private channel completed" -ForegroundColor Green
         }
