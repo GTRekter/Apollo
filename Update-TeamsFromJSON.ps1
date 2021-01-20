@@ -1,25 +1,26 @@
 Param( 
     [Parameter(Position=0)]
-    [string]$Office365Username = '',
+    [string]$Office365Username,
     [Parameter(Position=1)]
-    [string]$Office365Password = '', 
+    [string]$Office365Password, 
     [Parameter(Position=2)]
-    [string]$TeamsFilePath = '.\teams.json'
+    [string]$TeamsFilePath
 )
 
-# Import modules
+Write-Verbose "Import modules"
 $Module = Get-Module -Name MicrosoftTeams -ListAvailable 
 if($Module.Count -eq 0) {   
+  Write-Verbose "Install MicrosoftTeams module"
   Install-Module -Name MicrosoftTeams -AllowPrerelease -AllowClobber -Force
 }
 
 # Functions
 Function New-MicrosoftTeam([object]$Team) {
   Try {
-    # Create new Team
+    Write-Verbose "Create $($Team.DisplayName) $($Team.Visibility) team"
     $NewTeam = New-Team -DisplayName $Team.DisplayName -Visibility $Team.Visibility
 
-    # Add user to Team
+    Write-Verbose "Add $($Team.Users.Length) users to $($Team.DisplayName) team"
     $Team.Users | ForEach-Object -Begin {
       $Index = 0   
     } -Process {
@@ -27,10 +28,10 @@ Function New-MicrosoftTeam([object]$Team) {
       Write-Progress -Id 1 -ParentId 0 -Activity "Add user to the team" -Status "$($Index) of $($Team.Users.Length) - User: $($_.Email), Role: $($_.Role)" -PercentComplete ($Index/$Team.Users.Length*100)
       Add-TeamUser -User $_.Email -Role $_.Role -GroupId $NewTeam.GroupId
     } -End {
-      Write-Host "Add user to the team completed" -ForegroundColor Green
+      Write-Verbose "Users succesfully added to the $($Team.DisplayName) team"
     }
 
-    # Create channels
+    Write-Verbose "Add $($Team.Channels.Length) channels to $($Team.DisplayName) team"
     $Team.Channels | ForEach-Object -Begin {
       $Index = 0   
     } -Process {
@@ -38,8 +39,10 @@ Function New-MicrosoftTeam([object]$Team) {
       Write-Progress -Id 2 -ParentId 0 -Activity "Creation of a new channel" -Status "$($Index) of $($Team.Channels.Length) - Display Name: $($_.DisplayName), Membership Type: $($_.MembershipType)" -PercentComplete ($index/$Team.Channels.Length*100)   
       New-TeamChannel -DisplayName $_.FisplayName -MembershipType $_.MembershipType -GroupId $NewTeam.GroupId
 
+      Write-Verbose "Check channel membership type"
       if('Private' -eq $_.MembershipType -And $_.Users.Length -gt 0) {
-        $_.users | ForEach-Object -Begin {
+        Write-Verbose "Add $($_.Users.Length) users to $($_.DisplayName) private channel"
+        $_.Users | ForEach-Object -Begin {
           $IndexUsers = 0 
           $UsersLength = $_.Users.Length
           $DisplayName = $_.DisplayName
@@ -48,11 +51,11 @@ Function New-MicrosoftTeam([object]$Team) {
           Write-Progress -Id 3 -ParentId 2 -Activity "Add user to the private channel" -Status "$($IndexUsers) of $($UsersLength) - User: $($_.Email), Role: $($_.Role)" -PercentComplete ($IndexUsers/$UsersLength*100)   
           Add-UserToPrivateChannel -DisplayName $DisplayName -Email $_.Email -Role $_.Role -GroupId $NewTeam.groupId
         } -End {
-          Write-Host "Add user to the private channel completed" -ForegroundColor Green
+          Write-Verbose "Users succesfully added to the $($_.DisplayName) channel"
         }
       }
     } -End {
-      Write-Host "Creation of a new channel completed" -ForegroundColor Green
+      Write-Verbose "Channels succesfully created"
     }
   }
   Catch {
@@ -64,9 +67,14 @@ Function Add-UserToPrivateChannel([string]$DisplayName, [string]$Email, [string]
   $Attemps = 0
   do {
     try {
+      Write-Verbose "$($Attemps) attempt/s"
+      Write-Verbose "Waiting $(60*$Attemps) seconds"
       Start-Sleep -s (60*$Attemps)
+      Write-Verbose "Try to add $($Email) to $($DisplayName) private channel"
       Add-TeamChannelUser -DisplayName $DisplayName -User $Email -GroupId $GroupId
+      Write-Verbose "Check user role"
       if("Owner" -eq $Role){     
+        Write-Verbose "Set $($Email) as owner of the $($DisplayName) private channel"
         Add-TeamChannelUser -DisplayName $DisplayName -User $Email -Role "Owner" -GroupId $GroupId
       } 
       break;
@@ -79,12 +87,12 @@ Function Add-UserToPrivateChannel([string]$DisplayName, [string]$Email, [string]
   } while ($Attemps -lt $MaxNumberOfAttemps)
 }
 
-# Connect to MS Teams
+Write-Verbose "Connect to MS Teams"
 $SecurePassword = ConvertTo-SecureString -AsPlainText $Office365Password -Force
 $Credentials = New-Object -TypeName System.Management.Automation.PSCredential -Argumentlist $Office365Username, $SecurePassword;
 Connect-MicrosoftTeams -Credential $Credentials
 
-# Read teams file
+Write-Verbose "Read JSON file"
 $Json = Get-Content -Raw -Path $TeamsFilePath | ConvertFrom-Json
 $Json.Teams | ForEach-Object -Begin {
   $Index = 0    
