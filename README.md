@@ -16,13 +16,13 @@ Before running the script, ensure that the MicrosoftTeams PowerShell module is i
 2. **Set PowerShell Execution Policy**:
    ```powershell
    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-
+   ```
 3. **Run the Script**:
-  Execute the script with the required parameters:
-  ```powershell
-  .\path\to\script.ps1 -Office365Username 'yourusername@domain.com' -Office365Password 'yourpassword' -TeamsFilePath '.\path\to\input.json'
-
-Replace yourusername@domain.com and yourpassword with your Office 365 credentials, and adjust the path to the input JSON file as needed.
+   Execute the script with the required parameters:
+   ```powershell
+   .\path\to\script.ps1 -Office365Username 'yourusername@domain.com' -Office365Password 'yourpassword' -TeamsFilePath '.\path\to\input.json'
+   ```
+Replace `yourusername@domain.com` and `yourpassword` with your Office 365 credentials, and adjust the path to the input JSON file as needed.
 
 # Features
 - **Team Creation**: Automatically creates new Teams with specified visibility.
